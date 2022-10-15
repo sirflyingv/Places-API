@@ -44,7 +44,7 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
   // getting tags from URL
   const tagsNames = req.query.tags.split(',');
   const tags = await Tag.find({ tag: tagsNames });
-  // searching for places by tags
+  // searching for places by tags - must have all tags from query
   const places = await Place.find({
     tags: { $all: tags },
   });
