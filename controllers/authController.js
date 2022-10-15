@@ -243,34 +243,3 @@ exports.updatePassword = catchAsync(async (req, res, next) => {
   createSendToken(user, 200, res);
   // const newToken = signToken(user.id);
 
-  // res.status(201).json({
-  //   status: 'success',
-  //   message: 'password changed',
-  //   newToken,
-  // });
-});
-
-// Test user
-// {
-//   "name": "Blaidd",
-//   "email": "hot_wolfe@liurnia.lb",
-//   "password": "rannithebestmom", // later changed to moonorder
-//   "passwordConfirm": "rannithebestmom"
-// }
-
-// Test admin
-// {
-//   "name": "Ranni",
-//   "email": "Renna@liurnia.lb",
-//   "password": "fuckthegoldenorder",
-//   "passwordConfirm": "fuckthegoldenorder",
-//   "role": "admin"
-//  }
-
-// {
-//   "name": "DirtyEldel",
-//   "email": "eldel@liurnia.lb",
-//   "password": "iseee!!!",
-//   "passwordConfirm": "iseee!!!",
-//   "role": "user"
-// }
