@@ -21,7 +21,7 @@ exports.addTags = catchAsync(async (req, res, next) => {
   await doc.save();
 
   res.status(200).json({
-    status: 'succ Ass',
+    status: 'success',
     data: doc,
   });
 });
@@ -39,7 +39,7 @@ exports.deleteTags = catchAsync(async (req, res, next) => {
   await doc.save();
 
   res.status(200).json({
-    status: 'succ Ass',
+    status: 'success',
     data: doc,
   });
 });
