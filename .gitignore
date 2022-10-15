@@ -2,3 +2,4 @@ node_modules
 dev_data
 .vscode
 config.env
+info/helpers.txt
