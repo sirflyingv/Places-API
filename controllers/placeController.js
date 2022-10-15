@@ -10,17 +10,41 @@ exports.getPlace = factory.getOne(Place);
 exports.updatePlace = factory.updateOne(Place);
 exports.deletePlace = factory.deleteOne(Place);
 
-exports.updateTags = catchAsync(async (req, res, next) => {
-  const doc = await Place.findByIdAndUpdate(req.params.id, req.body, {
-    new: true,
-    runValidators: true,
-  });
+// Add one or many tags to place
+exports.addTags = catchAsync(async (req, res, next) => {
+  const doc = await Place.findById(req.params.id);
+  const tags = await Tag.find({ _id: req.body.tags });
+
+  doc.tags.push(...tags);
+
+  doc.markModified('tags');
+  await doc.save();
 
   res.status(200).json({
-    status: 'success',
+    status: 'succ Ass',
     data: doc,
   });
 });
+
+// Delete one or many tags from place
+exports.deleteTags = catchAsync(async (req, res, next) => {
+  const doc = await Place.findById(req.params.id);
+  const tagsToRemove = await Tag.find({ _id: req.body.tags });
+  const idsToRemove = tagsToRemove.map((el) => el.id);
+  console.log(idsToRemove);
+  doc.tags = doc.tags.filter((el) => !idsToRemove.includes(el.id));
+  console.log(doc.tags.length);
+
+  doc.markModified('tags');
+  await doc.save();
+
+  res.status(200).json({
+    status: 'succ Ass',
+    data: doc,
+  });
+});
+
+// a.filter(i => b.findIndex(f => f.id === i.id))
 
 // little helper to fix wrong coords order problem
 exports.swapCoords = catchAsync(async (req, res, next) => {

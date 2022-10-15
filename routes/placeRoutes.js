@@ -5,7 +5,8 @@ const {
   getPlace,
   updatePlace,
   deletePlace,
-  updateTags,
+  addTags,
+  deleteTags,
   swapCoords,
   searchPlaces,
 } = require('../controllers/placeController');
@@ -26,7 +27,7 @@ router
   .delete(protect, deletePlace);
 
 //  special
-router.route('/:id/tags').patch(updateTags);
+router.route('/:id/tags').patch(addTags).delete(deleteTags);
 
 router.route('/:id/swap-coords').patch(swapCoords);
 
