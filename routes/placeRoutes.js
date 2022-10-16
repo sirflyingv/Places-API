@@ -6,6 +6,7 @@ const {
   updatePlace,
   deletePlace,
   addTags,
+  addTagsByName,
   deleteTags,
   swapCoords,
   searchPlaces,
@@ -27,6 +28,7 @@ router
 
 //  special
 router.route('/:id/tags').patch(addTags).delete(deleteTags);
+router.route('/:id/add-tags-by-name').patch(addTagsByName);
 
 router.route('/:id/swap-coords').patch(swapCoords);
 

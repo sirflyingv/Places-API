@@ -37,16 +37,6 @@ const createSendToken = (user, statusCode, res) => {
 };
 
 exports.signup = catchAsync(async (req, res, next) => {
-  //  some meme security
-  // if (req.body.role === 'admin') {
-  //   res.status(420).json({
-  //     status: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  //     hehe: true,
-  //   });
-  //   console.log('🔴🔴🔴 Somebody tries to inject role into user signup 😂');
-  //   return;
-  // }
-
   const newUser = await User.create({
     name: req.body.name,
     email: req.body.email,
@@ -59,15 +49,6 @@ exports.signup = catchAsync(async (req, res, next) => {
   // creating token for user - arguments are payload (user id in this case), SECRET and expiration time
 
   createSendToken(newUser, 201, res);
-  // const token = signToken(newUser._id);
-
-  // res.status(201).json({
-  //   status: 'success',
-  //   token,
-  //   data: {
-  //     user: newUser,
-  //   },
-  // });
 });
 
 exports.login = catchAsync(async (req, res, next) => {
@@ -87,12 +68,6 @@ exports.login = catchAsync(async (req, res, next) => {
 
   // 3) if everything is ok, send token to client
   createSendToken(user, 200, res);
-  // const token = signToken(user.id);
-
-  // res.status(200).json({
-  //   status: 'success',
-  //   token,
-  // });
 });
 
 exports.protect = catchAsync(async (req, res, next) => {
@@ -210,12 +185,6 @@ exports.resetPassword = catchAsync(async (req, res, next) => {
 
   // 4) Log user in, send JWT
   createSendToken(user, 201, res);
-  // const token = signToken(user._id);
-
-  // res.status(201).json({
-  //   status: 'success',
-  //   token,
-  // });
 });
 
 exports.updatePassword = catchAsync(async (req, res, next) => {
