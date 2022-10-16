@@ -1,7 +1,7 @@
 const Place = require('../models/placeModel');
 const catchAsync = require('../utils/catchAsync');
 const Tag = require('../models/tagModel');
-// const AppError = require('../utils/appError');
+const AppError = require('../utils/appError');
 const factory = require('./handlerFactory');
 
 exports.getAllPlaces = factory.getAll(Place);
@@ -13,8 +13,11 @@ exports.deletePlace = factory.deleteOne(Place);
 // Add one or many tags to place
 exports.addTags = catchAsync(async (req, res, next) => {
   const doc = await Place.findById(req.params.id);
-  const tags = await Tag.find({ _id: req.body.tags });
+  if (!doc) {
+    return next(new AppError(`No document found with that ID`, 404));
+  }
 
+  const tags = await Tag.find({ _id: req.body.tags });
   doc.tags.push(...tags);
 
   doc.markModified('tags');
@@ -29,11 +32,11 @@ exports.addTags = catchAsync(async (req, res, next) => {
 // Delete one or many tags from place
 exports.deleteTags = catchAsync(async (req, res, next) => {
   const doc = await Place.findById(req.params.id);
-  const tagsToRemove = await Tag.find({ _id: req.body.tags });
-  const idsToRemove = tagsToRemove.map((el) => el.id);
-  console.log(idsToRemove);
-  doc.tags = doc.tags.filter((el) => !idsToRemove.includes(el.id));
-  console.log(doc.tags.length);
+  if (!doc) {
+    return next(new AppError(`No document found with that ID`, 404));
+  }
+
+  doc.tags = doc.tags.filter((el) => !req.body.tags.includes(el.id));
 
   doc.markModified('tags');
   await doc.save();
@@ -49,6 +52,9 @@ exports.deleteTags = catchAsync(async (req, res, next) => {
 // little helper to fix wrong coords order problem
 exports.swapCoords = catchAsync(async (req, res, next) => {
   const doc = await Place.findById(req.params.id);
+  if (!doc) {
+    return next(new AppError(`No document found with that ID`, 404));
+  }
 
   const [...coords] = doc.location.coordinates;
   doc.location.coordinates[0] = coords[1];

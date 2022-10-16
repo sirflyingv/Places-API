@@ -12,7 +12,6 @@ const {
 } = require('../controllers/placeController');
 const { protect } = require('../controllers/authController');
 const { setUserIds } = require('../controllers/handlerFactory');
-// const tagsRouter = require('./tagRouter');
 
 const router = express.Router();
 

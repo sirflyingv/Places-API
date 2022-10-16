@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+// const AppError = require('../utils/appError');
 // const validator = require('validator');
 
 const placeSchema = new mongoose.Schema(
@@ -11,6 +12,7 @@ const placeSchema = new mongoose.Schema(
       type: String,
       required: [true, 'A place must have a description'],
     },
+    address: String,
     tags: [{ type: mongoose.Schema.ObjectId, ref: 'Tag' }],
     user: {
       type: mongoose.Schema.ObjectId,
@@ -35,6 +37,12 @@ const placeSchema = new mongoose.Schema(
 placeSchema.virtual('tagsArray').get(function () {
   const array = this.tags.map((el) => el.tag);
   return array;
+});
+
+placeSchema.virtual('geoType').get(function () {
+  if (this.location.type === 'Point') return 'Point';
+  if (this.location.type === 'LineString') return 'Way';
+  if (this.location.type === 'Polygon') return 'Area';
 });
 
 placeSchema.pre(/^find/, function (next) {
