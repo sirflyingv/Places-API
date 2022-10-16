@@ -14,6 +14,7 @@ const placeSchema = new mongoose.Schema(
     },
     address: String,
     tags: [{ type: mongoose.Schema.ObjectId, ref: 'Tag' }],
+    tagsString: [String],
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
@@ -34,10 +35,10 @@ const placeSchema = new mongoose.Schema(
 );
 
 // making simple tags array from nested refs
-placeSchema.virtual('tagsArray').get(function () {
-  const array = this.tags.map((el) => el.tag);
-  return array;
-});
+// placeSchema.virtual('tagsArray').get(function () {
+//   const array = this.tags.map((el) => el.tag);
+//   return array;
+// });
 
 placeSchema.virtual('geoType').get(function () {
   if (this.location.type === 'Point') return 'Point';
@@ -49,7 +50,12 @@ placeSchema.pre(/^find/, function (next) {
   this.populate({
     path: 'tags',
     select: '-__v',
-  }).populate({ path: 'desc' });
+  });
+  next();
+});
+
+placeSchema.pre('save', function (next) {
+  this.tagsString = this.tags.map((tag) => tag.tag);
   next();
 });
 

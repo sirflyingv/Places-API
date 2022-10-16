@@ -1,3 +1,4 @@
+/* eslint-disable node/no-unsupported-features/es-syntax */
 const Place = require('../models/placeModel');
 const catchAsync = require('../utils/catchAsync');
 const Tag = require('../models/tagModel');
@@ -98,6 +99,24 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
   }
 
   const places = await query;
+
+  res.status(200).json({
+    status: 'success',
+    results: places.length,
+    data: places,
+  });
+});
+
+exports.searchPlaces = catchAsync(async (req, res, next) => {
+  const places = await Place.find({
+    ...(req.query.tags
+      ? { tagsString: { $all: req.query.tags.split(',') } }
+      : {}),
+    ...(req.query.indesc
+      ? { description: new RegExp(req.query.indesc, 'i') }
+      : {}),
+    ...(req.query.inname ? { name: new RegExp(req.query.inname, 'i') } : {}),
+  });
 
   res.status(200).json({
     status: 'success',
