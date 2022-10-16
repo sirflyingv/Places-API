@@ -70,14 +70,34 @@ exports.swapCoords = catchAsync(async (req, res, next) => {
 });
 
 exports.searchPlaces = catchAsync(async (req, res, next) => {
-  // Search by tags
-  // getting tags from URL
-  const tagsNames = req.query.tags.split(',');
-  const tags = await Tag.find({ tag: tagsNames });
-  // searching for places by tags - must have all tags from query
-  const places = await Place.find({
-    tags: { $all: tags },
-  });
+  let query = Place.find();
+
+  // checking tags in query string and making array of them
+  let tagsNames;
+  if (req.query.tags) tagsNames = req.query.tags.split(',');
+
+  // adding tags to mongoose query
+  let tagsToSearch;
+  if (tagsNames) {
+    tagsToSearch = await Tag.find({ tag: tagsNames });
+    query = query.find({ tags: { $all: tagsToSearch } });
+  }
+
+  // adding string to mongoose query to search in description
+  const indescSearch = req.query.indesc;
+  if (indescSearch) {
+    const regexpDescription = new RegExp(indescSearch, 'i');
+    query = query.find({ description: regexpDescription });
+  }
+
+  // adding string to mongoose query to search in name
+  const inNameSearch = req.query.inname;
+  if (inNameSearch) {
+    const regexpName = new RegExp(inNameSearch, 'i');
+    query = query.find({ name: regexpName });
+  }
+
+  const places = await query;
 
   res.status(200).json({
     status: 'success',
