@@ -27,9 +27,10 @@ router
   .delete(protect, deletePlace);
 
 //  special
-router.route('/:id/tags').patch(addTags).delete(deleteTags);
-router.route('/:id/add-tags-by-name').patch(addTagsByName);
+router.route('/:id/tags').patch(protect, addTags).delete(protect, deleteTags);
+// add tags to place
+router.route('/:id/add-tags-by-name').patch(protect, addTagsByName);
 
-router.route('/:id/swap-coords').patch(swapCoords);
+router.route('/:id/swap-coords').patch(protect, swapCoords);
 
 module.exports = router;
