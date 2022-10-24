@@ -89,10 +89,11 @@ exports.deleteTags = catchAsync(async (req, res, next) => {
 });
 
 exports.searchPlaces = catchAsync(async (req, res, next) => {
+  // console.log(req.query.tags);
+  // const tagString = req.query.tags.replace(/ /g, '');
+  const tagString = req.query.tags ? req.query.tags.replace(/ /g, '') : '';
   const places = await Place.find({
-    ...(req.query.tags
-      ? { tagsString: { $all: req.query.tags.split(',') } }
-      : {}),
+    ...(req.query.tags ? { tagsString: { $all: tagString } } : {}),
     ...(req.query.indesc
       ? { description: new RegExp(req.query.indesc, 'i') }
       : {}),
