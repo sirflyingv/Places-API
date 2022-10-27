@@ -12,6 +12,7 @@ const globalErrorHandler = require('./controllers/errorController');
 const userRouter = require('./routes/userRoutes');
 const placeRouter = require('./routes/placeRoutes');
 const tagsRouter = require('./routes/tagRouter');
+const placeCollectionRouter = require('./routes/placeCollectionRouter');
 
 const app = express();
 
@@ -73,6 +74,7 @@ app.use((req, res, next) => {
 app.use('/api/v1/users', userRouter);
 app.use('/api/v1/places', placeRouter);
 app.use('/api/v1/tags', tagsRouter);
+app.use('/api/v1/place-collections', placeCollectionRouter);
 
 // catching all wrong routes uncaught by routers ⬆
 app.all('*', (req, res, next) => {
