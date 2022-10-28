@@ -47,6 +47,14 @@ exports.createOne = (Model) =>
 
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
+    if (req.params.id.length !== 24)
+      return next(
+        new AppError(
+          `No document found with that ID, probably wrong ID format`,
+          404
+        )
+      );
+
     let query = Model.findById(req.params.id);
 
     if (popOptions) query = query.populate(popOptions);
