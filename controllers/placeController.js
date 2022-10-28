@@ -111,7 +111,8 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
 exports.getPlacesNear = catchAsync(async (req, res, next) => {
   const { latlngdist } = req.params;
   console.log(latlngdist);
-  const [lat, lng, dist] = latlngdist.split(',');
+  // const [lat, lng, dist] = latlngdist.split(',');
+  const [lng, lat, dist] = latlngdist.split(',');
 
   if (!lat || !lng) {
     return next(new AppError('Wrong coordinates format', 400));
