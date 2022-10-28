@@ -108,6 +108,38 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
   });
 });
 
+exports.getPlacesNear = catchAsync(async (req, res, next) => {
+  const { latlngdist } = req.params;
+  console.log(latlngdist);
+  const [lat, lng, dist] = latlngdist.split(',');
+
+  if (!lat || !lng) {
+    return next(new AppError('Wrong coordinates format', 400));
+  }
+  // console.log(dist, lat, lng);
+
+  const places = await Place.find({
+    location: {
+      $near: {
+        $geometry: {
+          type: 'Point',
+          coordinates: [lng, lat],
+        },
+        $maxDistance: dist,
+        $minDistance: 0,
+      },
+    },
+  });
+
+  res.status(200).json({
+    status: 'success',
+    results: places.length,
+    data: {
+      places: places,
+    },
+  });
+});
+
 // little helper to fix wrong coords order problem
 exports.swapCoords = catchAsync(async (req, res, next) => {
   const doc = await Place.findById(req.params.id);

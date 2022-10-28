@@ -10,6 +10,7 @@ const {
   deleteTags,
   swapCoords,
   searchPlaces,
+  getPlacesNear,
 } = require('../controllers/placeController');
 const { protect } = require('../controllers/authController');
 const { setUserIds } = require('../controllers/handlerFactory');
@@ -19,6 +20,8 @@ const router = express.Router();
 router.route('/search').get(searchPlaces);
 
 router.route('/').get(getAllPlaces).post(protect, setUserIds, createPlace);
+
+router.route('/discovery-mode/:latlngdist').get(getPlacesNear);
 
 router
   .route('/:id')

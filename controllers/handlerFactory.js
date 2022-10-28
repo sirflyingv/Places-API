@@ -48,13 +48,13 @@ exports.createOne = (Model) =>
 exports.getOne = (Model, popOptions) =>
   catchAsync(async (req, res, next) => {
     let query = Model.findById(req.params.id);
+
     if (popOptions) query = query.populate(popOptions);
     const doc = await query;
 
     // const doc = await Model.findById(req.params.id).populate('reviews'); // populate added for virtual population of reviews to work
 
     //Tour.findOne({_id: req.params.id}) - exactly same as👆, just shorthand
-
     if (!doc) {
       // return to finish this function execution not to have 2 responses
       return next(new AppError(`No document found with that ID`, 404));

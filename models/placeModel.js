@@ -34,6 +34,8 @@ const placeSchema = new mongoose.Schema(
   { toObject: { virtuals: true } }
 );
 
+placeSchema.index({ location: '2dsphere' });
+
 // making simple tags array from nested refs
 // placeSchema.virtual('tagsArray').get(function () {
 //   const array = this.tags.map((el) => el.tag);
