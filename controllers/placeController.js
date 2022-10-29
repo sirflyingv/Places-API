@@ -101,11 +101,16 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
     ...(req.query.inname ? { name: new RegExp(req.query.inname, 'i') } : {}),
   });
 
-  res.status(200).json({
-    status: 'success',
-    results: places.length,
-    data: places,
-  });
+  res
+    .status(200)
+    .json({
+      status: 'success',
+      results: places.length,
+      data: places,
+    })
+    .set({
+      'Cache-Control': 'no-cache',
+    });
 });
 
 exports.getPlacesNear = catchAsync(async (req, res, next) => {
