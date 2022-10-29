@@ -103,7 +103,7 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
 
   res
     .set({
-      'Cache-Control': 'no-cache',
+      'Cache-Control': 'no-cache, no-store, must-revalidate',
     })
     .status(200)
     .json({
