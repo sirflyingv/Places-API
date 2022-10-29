@@ -102,14 +102,14 @@ exports.searchPlaces = catchAsync(async (req, res, next) => {
   });
 
   res
+    .set({
+      'Cache-Control': 'no-cache',
+    })
     .status(200)
     .json({
       status: 'success',
       results: places.length,
       data: places,
-    })
-    .set({
-      'Cache-Control': 'no-cache',
     });
 });
 
