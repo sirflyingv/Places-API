@@ -21,7 +21,7 @@ router.route('/search').get(searchPlaces);
 
 router.route('/').get(getAllPlaces).post(protect, setUserIds, createPlace);
 
-router.route('/discovery-mode/:latlngdist').get(getPlacesNear);
+// router.route('/discovery-mode/:latlngdist').get(getPlacesNear);
 
 router
   .route('/:id')
