@@ -90,7 +90,7 @@ exports.deleteTags = catchAsync(async (req, res, next) => {
 
 exports.searchPlaces = catchAsync(async (req, res, next) => {
   const tagString = req.query.tags
-    ? req.query.tags.replace(/ /g, '').split(',')
+    ? req.query.tags.replace(/ /g, '').toLowerCase().split(',')
     : '';
 
   const places = await Place.find({
